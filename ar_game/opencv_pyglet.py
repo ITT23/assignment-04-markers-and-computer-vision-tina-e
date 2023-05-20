@@ -54,6 +54,11 @@ def cv2glet(img, fmt):
 # Create a video capture object for the webcam
 cap = cv2.VideoCapture(video_id)
 
+# Adjust pyglet window width and height to webcam resolution
+resolution = cap.read()[1].shape
+config.WINDOW_HEIGHT = resolution[0]
+config.WINDOW_WIDTH = resolution[1]
+
 window = pyglet.window.Window(config.WINDOW_WIDTH, config.WINDOW_HEIGHT)
 aruco_detector = MarkerDetector(cap.read()[1])
 game = Game(config.WINDOW_HEIGHT)

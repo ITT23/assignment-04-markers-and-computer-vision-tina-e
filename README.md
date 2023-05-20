@@ -28,7 +28,7 @@ Run `python3 AR-game.py [video in] [score] [difficulty] [calc threshold]`
 
 ### Controls
 - Place the AruCo-Board in front of your webcam
-- Everyone knows Pong. But: use your hands instead of moving a paddle
+- Everyone knows Pong. But: use your finger instead of moving a paddle
 - If no one wants to join in, you can use both your own hands - however then you will have to tape the AruCo-Board to your head or chest or whatever...well, it's up to you
 - Hide a marker to **pause** the game
 - Press `Q` to quit and `SPACE` to restart

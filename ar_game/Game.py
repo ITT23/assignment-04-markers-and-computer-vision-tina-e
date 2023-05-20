@@ -3,6 +3,7 @@ import config
 from Ball import Ball
 from Decor import Decor
 from pyglet import text
+import numpy as np
 
 
 class Game:
@@ -71,7 +72,11 @@ class Game:
         based on this, check if a player scored, the game has finished and update ball
         """
         if self.game_state == 0:
-            ret, thresh = cv2.threshold(img, config.THRESHOLD, config.WHITE_SINGLE, cv2.THRESH_BINARY)
+            if config.CALC_THRESHOLD:
+                # calculate threshold based on most frequent value (corresponds to the value for board) in img
+                ret, thresh = cv2.threshold(img, np.bincount(img.flatten()).argmax() - 20, config.WHITE_SINGLE, cv2.THRESH_BINARY)
+            else:
+                ret, thresh = cv2.threshold(img, config.THRESHOLD, config.WHITE_SINGLE, cv2.THRESH_BINARY)
             self.goal_test()
             self.over_test()
             self.ball.hit_test(thresh)

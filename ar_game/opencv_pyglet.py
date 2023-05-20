@@ -25,6 +25,11 @@ if len(sys.argv) > 1:
             config.INIT_BALL_V = config.INIT_BALL_V_HARD
         else:
             print("WARN: No valid input for: Difficulty\nDefault value set.")
+    if sys.argv[4]:
+        try:
+            config.CALC_THRESHOLD = eval(sys.argv[4])
+        except:
+            print("WARN: No valid input for: Threshold Calculation\nDefault value set.")
 
 
 # converts OpenCV image to PIL image and then to pyglet texture

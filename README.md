@@ -5,11 +5,11 @@
 # 1 Perspective Transformation
 
 Run `python3 opencv_click.py [input file path] [output destination] [result width] [result height] [allow orientation fix]`
-- input: input file path - *required*
-- output: output destination path - *required*
-- width: result width - *optional, default: 1920*
-- height: result height - *optional, default: 1080*
-- allow orientation fix: If allowed, the system recognizes if selected region is portrait or landscape. Width and height will be switches if more suitable - *optional, default: False*
+- string input: input file path - *required*
+- string output: output destination path - *required*
+- int width: result width - *optional, default: 1920*
+- int height: result height - *optional, default: 1080*
+- bool allow orientation fix: If allowed, the system recognizes if selected region is portrait or landscape. Width and height will be switches if more suitable - *optional, default: False*
 
 ### Controls
 - Press `S` in the result view to save the image
@@ -19,10 +19,12 @@ Run `python3 opencv_click.py [input file path] [output destination] [result widt
 ---
 
 # 2 AR Game - PONG
-Run `python3 opencv_pyglet.py [video in] [score] [difficulty]`
-- video in: video input device - *optional*
-- score: the score a player needs to win the game - *optional, default: 5*
-- difficulty: difficulty defined by speed of ball - *optional, default: easy*
+Run `python3 opencv_pyglet.py [video in] [score] [difficulty] [calc threshold]`
+- int video in: video input device - *optional, default: 0*
+- int score: the score a player needs to win the game - *optional, default: 5*
+- (easy | medium | hard) difficulty: difficulty defined by speed of ball - *optional, default: easy*
+- bool calc threshold: If True, the threshold for binary image will be calculated during runtime for every tick. Decreases performance (a bit, still acceptable:)).\
+  Should therefor only be set in changing or low light conditions. - *optional, default: False*
 
 ### Controls
 - Place the AruCo-Board in front of your webcam

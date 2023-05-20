@@ -4,6 +4,8 @@ import numpy as np
 import math
 from imutils import perspective
 
+
+# read command line parameters
 if len(sys.argv) >= 3:
     path_in = sys.argv[1]
     path_out = sys.argv[2]
@@ -27,6 +29,7 @@ else:
     sys.exit(1)
 
 
+# set constants based on command line parameters
 WIDTH = w_out
 HEIGHT = h_out
 ALLOW_ORIENTATION_CHANGE = allow_orientation_fix
@@ -34,15 +37,14 @@ DESTINATION_OUT = path_out
 WINDOW_NAME = 'Preview Window'
 IMG_ORIGINAL = cv2.imread(path_in)
 
-img = IMG_ORIGINAL.copy()
-img_result = IMG_ORIGINAL.copy()
-cv2.namedWindow(WINDOW_NAME)
 
-is_result_displayed = False
-corners = []
-
-
-def switch_orientation(width, height):
+def switch_orientation(width: int, height: int):
+    """
+    switch width and height to better match selected region
+    :param width: width before switch
+    :param height: height before switch
+    :return: updated width and height after switch where necessary
+    """
     dx_upper = math.sqrt((corners[0][0] - corners[1][0]) ** 2 + (corners[0][1] - corners[1][1]) ** 2)
     dx_lower = math.sqrt((corners[3][0] - corners[2][0]) ** 2 + (corners[3][1] - corners[2][1]) ** 2)
     dy_left = math.sqrt((corners[0][0] - corners[3][0]) ** 2 + (corners[0][1] - corners[3][1]) ** 2)
@@ -54,7 +56,13 @@ def switch_orientation(width, height):
     return width, height
 
 
-def transform(width, height):
+def transform(width: int, height: int):
+    """
+    perspective transformation to given width and height
+    :param width: width to transform to
+    :param height: height to transform to
+    :return: warped image
+    """
     global img_result, corners
     destination = np.float32(np.array([[0, 0], [width, 0], [width, height], [0, height]]))
     matrix = cv2.getPerspectiveTransform(corners, destination)
@@ -62,6 +70,11 @@ def transform(width, height):
 
 
 def add_corner(x: int, y: int):
+    """
+    add corner on click, initiate transformation on 4th corner clicked
+    :param x: x corner
+    :param y: y corner
+    """
     global img, corners, is_result_displayed, WINDOW_NAME, WIDTH, HEIGHT, ALLOW_ORIENTATION_CHANGE, DESTINATION_OUT
     corners.append([x, y])
     if len(corners) == 4:
@@ -78,10 +91,17 @@ def add_corner(x: int, y: int):
 
 
 def mouse_callback(event, x, y, flags, params):
+    # prevent adding corners in result view as well as if there are already 4 corners
     if event == cv2.EVENT_LBUTTONDOWN and len(corners) < 4 and not is_result_displayed:
         add_corner(x, y)
 
 
+is_result_displayed = False
+corners = []
+
+img = IMG_ORIGINAL.copy()
+img_result = IMG_ORIGINAL.copy()
+cv2.namedWindow(WINDOW_NAME)
 cv2.setMouseCallback(WINDOW_NAME, mouse_callback, (img, path_out, w_out, h_out, allow_orientation_fix))
 cv2.imshow(WINDOW_NAME, img)
 
@@ -89,12 +109,16 @@ cv2.imshow(WINDOW_NAME, img)
 if __name__ == '__main__':
     while True:
         key = cv2.waitKey(0)
+        # on esc: discard changes and show original img
         if key == ord('\x1b'):
+            corners.clear()
             img = IMG_ORIGINAL.copy()
             cv2.imshow(WINDOW_NAME, img)
             is_result_displayed = False
+        # on s: if in result view: save image
         elif key == ord('s') and is_result_displayed:
             cv2.imwrite(DESTINATION_OUT, img)
+        # on q: quit
         elif key == ord('q'):
             break
     sys.exit(0)

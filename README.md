@@ -4,7 +4,7 @@
 
 # 1 Perspective Transformation
 
-Run `python3 opencv_click.py [input file path] [output destination] [result width] [result height] [allow orientation fix]`
+Run `python3 image-extractor.py [input file path] [output destination] [result width] [result height] [allow orientation fix]`
 - string input: input file path - *required*
 - string output: output destination path - *required*
 - int width: result width - *optional, default: 1920*
@@ -19,7 +19,7 @@ Run `python3 opencv_click.py [input file path] [output destination] [result widt
 ---
 
 # 2 AR Game - PONG
-Run `python3 opencv_pyglet.py [video in] [score] [difficulty] [calc threshold]`
+Run `python3 AR-game.py [video in] [score] [difficulty] [calc threshold]`
 - int video in: video input device - *optional, default: 0*
 - int score: the score a player needs to win the game - *optional, default: 5*
 - (easy | medium | hard) difficulty: difficulty defined by speed of ball - *optional, default: easy*

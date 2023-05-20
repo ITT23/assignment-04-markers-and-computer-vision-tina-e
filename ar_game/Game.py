@@ -36,6 +36,10 @@ class Game:
         self.game_state = 0
 
     def goal_test(self):
+        """
+        check and handle ball's collision with goals:
+        increase scores, reset ball and set game state to 'get ready again'
+        """
         if self.ball.body.x + self.ball.body.radius <= config.BORDER_WIDTH:
             self.score_b += 1
             self.score_b_label.text = f"Player B: {self.score_b}"
@@ -50,6 +54,10 @@ class Game:
             self.game_state = -1
 
     def over_test(self):
+        """
+        check if one of the players has reached score to win
+        if so, set game state to 'game finished'
+        """
         if self.score_b >= config.SCORE_WIN:
             self.over_winner_label.text = self.player_b_win_text
             self.game_state = 1
@@ -58,6 +66,10 @@ class Game:
             self.game_state = 1
 
     def update(self, img):
+        """
+        if game running, calc binary threshold img of current webcam capture
+        based on this, check if a player scored, the game has finished and update ball
+        """
         if self.game_state == 0:
             ret, thresh = cv2.threshold(img, config.THRESHOLD, config.WHITE_SINGLE, cv2.THRESH_BINARY)
             self.goal_test()
@@ -66,6 +78,10 @@ class Game:
             self.ball.update()
 
     def draw_get_ready(self):
+        """
+        draw label 'get ready' and
+        wait <WAIT_AFTER_GOAL> ticks to continue game
+        """
         self.countdown_label.draw()
         self.running_countdown += 1
         if self.running_countdown >= config.WAIT_AFTER_GOAL:
@@ -73,14 +89,19 @@ class Game:
             self.running_countdown = 0
 
     def draw(self):
+        # game running
         if self.game_state == 0:
             self.ball.draw()
+        # game finished
         elif self.game_state == 1:
             self.over_winner_label.draw()
             self.over_restart_label.draw()
+        # game paused because a player scored
         elif self.game_state == -1:
             self.scored_label.draw()
             self.draw_get_ready()
+        # initial state
+        # in the beginning, you have <WAIT_AFTER_GOAL> ticks to get game board ready
         elif self.game_state == 2:
             self.draw_get_ready()
 

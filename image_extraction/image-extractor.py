@@ -12,12 +12,12 @@ if len(sys.argv) >= 3:
     try:
         w_out = int(sys.argv[3])
     except:
-        w_out = 1080
+        w_out = 1920
         print("WARN: No valid input for: output width\nDefault value set.")
     try:
         h_out = int(sys.argv[4])
     except:
-        h_out = 1920
+        h_out = 1080
         print("WARN: No valid input for: output height\nDefault value set.")
     try:
         allow_orientation_fix = eval(sys.argv[5])
